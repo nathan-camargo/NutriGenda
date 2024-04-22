@@ -15,6 +15,12 @@
         android:theme="@style/Theme.NutriGenda"
         tools:targetApi="31">
         <activity
+            android:name=".screens.healthProfile.healthProfileScreen"
+            android:exported="false" />
+        <activity
+            android:name=".screens.user.UserLoginScreen"
+            android:exported="false" />
+        <activity
             android:name=".screens.user.TokenScreen"
             android:exported="true">
             <intent-filter>

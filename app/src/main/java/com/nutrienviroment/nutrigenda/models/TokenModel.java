@@ -1,4 +1,4 @@
-package com.nutrienviroment.nutrigenda.model;
+package com.nutrienviroment.nutrigenda.models;
 
 import lombok.Data;
 

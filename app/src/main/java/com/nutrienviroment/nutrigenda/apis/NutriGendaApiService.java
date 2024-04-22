@@ -1,6 +1,6 @@
-package com.nutrienviroment.nutrigenda.api;
+package com.nutrienviroment.nutrigenda.apis;
 
-import com.nutrienviroment.nutrigenda.model.TokenModel;
+import com.nutrienviroment.nutrigenda.models.TokenModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

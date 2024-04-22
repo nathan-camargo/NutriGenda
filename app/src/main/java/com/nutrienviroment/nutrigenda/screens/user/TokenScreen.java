@@ -5,8 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.nutrienviroment.nutrigenda.R;
-import com.nutrienviroment.nutrigenda.api.NutriGendaApiService;
-import com.nutrienviroment.nutrigenda.model.TokenModel;
+import com.nutrienviroment.nutrigenda.apis.NutriGendaApiService;
+import com.nutrienviroment.nutrigenda.models.TokenModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
