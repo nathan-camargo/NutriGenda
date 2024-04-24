@@ -1,4 +1,4 @@
-package com.nutrienviroment.nutrigenda.screens.healthProfile;
+package com.nutrienviroment.nutrigenda.screens.user;
 
 import android.os.Bundle;
 
@@ -10,13 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.nutrienviroment.nutrigenda.R;
 
-public class healthProfileScreen extends AppCompatActivity {
+public class UserTokenScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.health_profile_screen);
+        setContentView(R.layout.user_token_screen);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
