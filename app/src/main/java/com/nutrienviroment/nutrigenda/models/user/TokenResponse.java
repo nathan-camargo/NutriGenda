@@ -7,4 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class TokenResponse {
     private String token;
+
+    public String getToken() {
+        return token;
+    }
 }

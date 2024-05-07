@@ -36,9 +36,6 @@
             android:name=".screens.healthProfile.HealthProfileScreen"
             android:exported="true" />
         <activity
-            android:name=".screens.user.UserLoginScreen"
-            android:exported="true" />
-        <activity
             android:name=".screens.general.ChooseRole"
             android:exported="true">
             <intent-filter>

@@ -10,7 +10,7 @@ import retrofit2.http.POST;
 
 public interface NutritionistServices {
 
-    @POST("api/nutritionist/register")
+    @POST("api/nutritionist")
     Call<Void> registerNutritionist(@Body Nutritionist nutritionist);
 
     @POST("api/nutritionist/login")
