@@ -11,6 +11,6 @@ public interface UserServices {
     @POST("api/user")
     Call<Void> registerUser(@Body User user);
 
-    @POST("api/user")
+    @POST("api/user/login")
     Call<TokenResponse> loginUser(@Body User user);
 }

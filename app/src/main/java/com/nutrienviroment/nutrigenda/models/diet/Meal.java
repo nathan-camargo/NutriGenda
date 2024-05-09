@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Diet {
+public class Meal {
     public String Id;
-    public String UserId;
-    public List<Meal> Meals;
+    public String Name;
+    public List<FoodItem> FoodItems;
+    public String DietId;
 }
-

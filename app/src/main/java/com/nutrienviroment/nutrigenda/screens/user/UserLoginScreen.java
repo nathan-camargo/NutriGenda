@@ -1,5 +1,6 @@
 package com.nutrienviroment.nutrigenda.screens.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -7,10 +8,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.nutrienviroment.nutrigenda.R;
 import com.nutrienviroment.nutrigenda.models.user.TokenResponse;
 import com.nutrienviroment.nutrigenda.models.user.User;
+import com.nutrienviroment.nutrigenda.screens.diet.DietScreen;
 import com.nutrienviroment.nutrigenda.services.user.UserServices;
 
 import retrofit2.Call;
@@ -28,7 +29,7 @@ public class UserLoginScreen extends AppCompatActivity {
         setContentView(R.layout.user_login_screen);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://your-api-url.com/")
+                .baseUrl("https://nutrigendaapi.azurewebsites.net/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -52,6 +53,12 @@ public class UserLoginScreen extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String token = response.body().getToken();
                     Toast.makeText(UserLoginScreen.this, "Login bem-sucedido!", Toast.LENGTH_SHORT).show();
+
+                    // Após sucesso no login, iniciar a DietScreen
+                    Intent intent = new Intent(UserLoginScreen.this, DietScreen.class);
+                    intent.putExtra("EXTRA_SESSION_TOKEN", token); // Passando o token como extra
+                    startActivity(intent);
+                    finish(); // Finaliza a tela de login para não retornar quando pressionar voltar
                 } else {
                     Toast.makeText(UserLoginScreen.this, "Erro no login: " + response.message(), Toast.LENGTH_SHORT).show();
                 }

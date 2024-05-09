@@ -1,15 +1,12 @@
 package com.nutrienviroment.nutrigenda.models.diet;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Diet {
+public class FoodItem {
     public String Id;
-    public String UserId;
-    public List<Meal> Meals;
+    public String Name;
+    public String Description;
 }
-

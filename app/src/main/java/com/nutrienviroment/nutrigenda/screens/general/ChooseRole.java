@@ -11,9 +11,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nutrienviroment.nutrigenda.R;
-import com.nutrienviroment.nutrigenda.screens.user.UserRegisterScreen;
 import com.nutrienviroment.nutrigenda.screens.nutritionist.NutritionistRegisterScreen;
-import com.nutrienviroment.nutrigenda.screens.user.UserTokenScreen;
+import com.nutrienviroment.nutrigenda.screens.user.UserChooseScreen;
 
 public class ChooseRole extends AppCompatActivity {
 
@@ -32,7 +31,7 @@ public class ChooseRole extends AppCompatActivity {
         Button nutritionistButton = findViewById(R.id.button7);
 
         patientButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ChooseRole.this, UserTokenScreen.class);
+            Intent intent = new Intent(ChooseRole.this, UserChooseScreen.class);
             startActivity(intent);
         });
 

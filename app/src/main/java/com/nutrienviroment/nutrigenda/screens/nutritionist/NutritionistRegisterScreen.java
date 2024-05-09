@@ -7,16 +7,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.nutrienviroment.nutrigenda.R;
 import com.nutrienviroment.nutrigenda.models.nutritionist.Nutritionist;
-import com.nutrienviroment.nutrigenda.screens.general.ChooseRole;
-import com.nutrienviroment.nutrigenda.screens.user.UserTokenScreen;
 import com.nutrienviroment.nutrigenda.services.nutritionist.NutritionistServices;
 
 import retrofit2.Call;
