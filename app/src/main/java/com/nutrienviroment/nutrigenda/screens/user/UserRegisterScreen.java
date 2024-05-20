@@ -1,5 +1,6 @@
 package com.nutrienviroment.nutrigenda.screens.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -13,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.nutrienviroment.nutrigenda.R;
 import com.nutrienviroment.nutrigenda.models.nutritionist.Nutritionist;
+import com.nutrienviroment.nutrigenda.models.user.TokenResponse;
 import com.nutrienviroment.nutrigenda.models.user.User;
+import com.nutrienviroment.nutrigenda.screens.general.ChooseRole;
 import com.nutrienviroment.nutrigenda.services.nutritionist.NutritionistServices;
 import com.nutrienviroment.nutrigenda.services.user.UserServices;
 
@@ -30,6 +33,7 @@ public class UserRegisterScreen extends AppCompatActivity {
     private UserServices apiService;
     private NutritionistServices nutritionistService;
     private Spinner nutritionistSpinner;
+    private EditText editTextName, editTextEmail, editTextPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +41,24 @@ public class UserRegisterScreen extends AppCompatActivity {
         setContentView(R.layout.user_register_screen);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://nutrigendaapi.azurewebsites.net/")
+                .baseUrl("http://10.0.2.2:5136")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         apiService = retrofit.create(UserServices.class);
         nutritionistService = retrofit.create(NutritionistServices.class);
         nutritionistSpinner = findViewById(R.id.spinnerNutritionist);
+        editTextName = findViewById(R.id.editTextText7);
+        editTextEmail = findViewById(R.id.editTextText);
+        editTextPassword = findViewById(R.id.editTextText2);
 
         loadNutritionists();
 
         Button registerButton = findViewById(R.id.button2);
         registerButton.setOnClickListener(view -> {
-            String name = ((EditText) findViewById(R.id.editTextText7)).getText().toString();
-            String email = ((EditText) findViewById(R.id.editTextText)).getText().toString();
-            String password = ((EditText) findViewById(R.id.editTextText2)).getText().toString();
+            String name = editTextName.getText().toString();
+            String email = editTextEmail.getText().toString();
+            String password = editTextPassword.getText().toString();
             Nutritionist selectedNutritionist = (Nutritionist) nutritionistSpinner.getSelectedItem();
 
             User user = new User(name, email, password, selectedNutritionist.getId());
@@ -88,6 +95,7 @@ public class UserRegisterScreen extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(UserRegisterScreen.this, "Registro bem-sucedido!", Toast.LENGTH_SHORT).show();
+                    loginUser(user.getEmail(), user.getPassword());
                 } else {
                     Toast.makeText(UserRegisterScreen.this, "Erro no registro: " + response.message(), Toast.LENGTH_SHORT).show();
                 }
@@ -98,5 +106,41 @@ public class UserRegisterScreen extends AppCompatActivity {
                 Toast.makeText(UserRegisterScreen.this, "Falha na comunicação: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void loginUser(String email, String password) {
+        User loginUser = new User(null, email, password, null);
+        Call<TokenResponse> call = apiService.loginUser(loginUser);
+        call.enqueue(new Callback<TokenResponse>() {
+            @Override
+            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    TokenResponse tokenResponse = response.body();
+                    saveUserCredentials(tokenResponse);
+                    navigateToMainScreen();
+                } else {
+                    Toast.makeText(UserRegisterScreen.this, "Erro ao fazer login: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TokenResponse> call, Throwable t) {
+                Toast.makeText(UserRegisterScreen.this, "Falha na comunicação: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveUserCredentials(TokenResponse tokenResponse) {
+        getSharedPreferences("user_prefs", MODE_PRIVATE)
+                .edit()
+                .putString("token", tokenResponse.getToken())
+                .putString("userId", tokenResponse.getUserId())
+                .apply();
+    }
+
+    private void navigateToMainScreen() {
+        Intent intent = new Intent(UserRegisterScreen.this, ChooseRole.class);
+        startActivity(intent);
+        finish();
     }
 }

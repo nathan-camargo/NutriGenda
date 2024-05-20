@@ -15,14 +15,12 @@ public class UserChooseScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_choose_screen);
 
-        // Configuração do botão para criar uma conta
         Button createAccountButton = findViewById(R.id.button);
         createAccountButton.setOnClickListener(v -> {
             Intent intent = new Intent(UserChooseScreen.this, UserRegisterScreen.class);
             startActivity(intent);
         });
 
-        // Configuração do botão para login se já possui uma conta
         Button alreadyAccountButton = findViewById(R.id.button1);
         alreadyAccountButton.setOnClickListener(v -> {
             Intent intent = new Intent(UserChooseScreen.this, UserLoginScreen.class);

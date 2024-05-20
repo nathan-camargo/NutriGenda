@@ -1,5 +1,7 @@
 package com.nutrienviroment.nutrigenda.screens.nutritionist;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,13 +24,28 @@ public class NutritionistLoginScreen extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private NutritionistServices apiService;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nutritionist_login_screen);
+        sharedPreferences = getSharedPreferences("NutriPrefs", MODE_PRIVATE);
+        checkIfAlreadyLoggedIn();
         initializeUI();
         setupRetrofit();
+    }
+
+    private void checkIfAlreadyLoggedIn() {
+        String token = sharedPreferences.getString("TOKEN", null);
+        if (token != null) {
+            String userId = sharedPreferences.getString("USER_ID", null);
+            Intent intent = new Intent(NutritionistLoginScreen.this, NutritionistPatientListScreen.class);
+            intent.putExtra("USER_ID", userId);
+            intent.putExtra("TOKEN", token);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void initializeUI() {
@@ -45,7 +62,7 @@ public class NutritionistLoginScreen extends AppCompatActivity {
 
     private void setupRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://nutrigendaapi.azurewebsites.net/")
+                .baseUrl("http://10.0.2.2:5136")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -59,7 +76,20 @@ public class NutritionistLoginScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(NutritionistLoginScreen.this, "Login bem-sucedido! Token: " + response.body().getToken(), Toast.LENGTH_LONG).show();
+                    String token = response.body().getToken();
+                    String userId = response.body().getUserId();
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("TOKEN", token);
+                    editor.putString("USER_ID", userId);
+                    editor.apply();
+
+                    Toast.makeText(NutritionistLoginScreen.this, "Login bem-sucedido!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(NutritionistLoginScreen.this, NutritionistPatientListScreen.class);
+                    intent.putExtra("USER_ID", userId);
+                    intent.putExtra("TOKEN", token);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(NutritionistLoginScreen.this, "Erro no login: " + response.message(), Toast.LENGTH_LONG).show();
                 }
